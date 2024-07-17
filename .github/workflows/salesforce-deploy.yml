@@ -22,7 +22,7 @@ jobs:
         SF_DEV_HUB_USERNAME: ${{ secrets.SF_DEV_HUB_USERNAME }}
 
     - name: Deploy to Dev Sandbox
-      run: sfdx force:source:deploy -p path/to/your/metadata -u DevOrgAlias
+      run: sfdx force:source:deploy -p SFDXProject/manifest/package.xml -u DevOrgAlias
 
     - name: Authenticate with Test Sandbox
       run: sfdx auth:jwt:grant --clientid ${{ secrets.SF_TEST_CONSUMER_KEY }} --jwtkeyfile server.key --username ${{ secrets.SF_TEST_HUB_USERNAME }} --setdefaultdevhubusername --instanceurl https://test.salesforce.com
@@ -31,7 +31,7 @@ jobs:
         SF_TEST_HUB_USERNAME: ${{ secrets.SF_TEST_HUB_USERNAME }}
 
     - name: Deploy to Test Sandbox
-      run: sfdx force:source:deploy -p path/to/your/metadata -u TestOrgAlias
+      run: sfdx force:source:deploy -p SFDXProject/manifest/package.xml -u TestOrgAlias
 
     - name: Authenticate with Production
       run: sfdx auth:jwt:grant --clientid ${{ secrets.SF_PRODUCTION_CONSUMER_KEY }} --jwtkeyfile server.key --username ${{ secrets.SF_PRODUCTION_USERNAME }} --setdefaultdevhubusername --instanceurl https://login.salesforce.com
@@ -40,5 +40,5 @@ jobs:
         SF_PRODUCTION_USERNAME: ${{ secrets.SF_PRODUCTION_USERNAME }}
 
     - name: Validate Deployment to Production
-      run: sfdx force:source:deploy -p path/to/your/metadata -u ProdOrgAlias --checkonly --testlevel RunLocalTests
+      run: sfdx force:source:deploy -p SFDXProject/manifest/package.xml -u ProdOrgAlias --checkonly --testlevel RunLocalTests
       # Remove --checkonly for actual deployment after successful validation
