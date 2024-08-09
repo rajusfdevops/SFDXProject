@@ -20,8 +20,8 @@ def TEST2_CONNECTED_APP_CONSUMER_KEY = '3MVG9bFKi1uCqVFW8jjY.Py1iR0s6UUMTFRMTCVa
 def toolbelt = tool 'toolbelt'
 
 stage('Checkout Source') {
-    // When running in multi-branch job, one must issue this command
-    checkout scm
+// When running in multi-branch job, one must issue this command
+checkout scm
 }
 
 // Debugging: Print the credentials IDs to ensure they are set
@@ -36,64 +36,122 @@ println "TEST2_JWT_KEY_CRED_ID: ${TEST2_JWT_KEY_CRED_ID}"
 
 // Authorize and Deploy to Dev2
 withCredentials([file(credentialsId: DEV2_JWT_KEY_CRED_ID, variable: 'dev2_jwt_key_file')]) {
-    stage('Authorize and Deploy to Dev2') {
-        def rc
-        if (isUnix()) {
-            rc = sh returnStatus: true, script: "${toolbelt} force:auth:jwt:grant --clientid ${DEV2_CONNECTED_APP_CONSUMER_KEY} --username ${DEV2_HUB_ORG} --jwtkeyfile ${dev2_jwt_key_file} --setdefaultdevhubusername --instanceurl ${DEV2_SFDC_HOST}"
-        } else {
-            rc = bat returnStatus: true, script: "\"${toolbelt}\" force:auth:jwt:grant --clientid ${DEV2_CONNECTED_APP_CONSUMER_KEY} --username ${DEV2_HUB_ORG} --jwtkeyfile \"${dev2_jwt_key_file}\" --setdefaultdevhubusername --instanceurl ${DEV2_SFDC_HOST}"
+stage('Authorize and Deploy to Dev2') {
+    def rc
+    if (isUnix()) {
+        rc = sh returnStatus: true, script: "${toolbelt} force:auth:jwt:grant --clientid ${DEV2_CONNECTED_APP_CONSUMER_KEY} --username ${DEV2_HUB_ORG} --jwtkeyfile ${dev2_jwt_key_file} --setdefaultdevhubusername --instanceurl ${DEV2_SFDC_HOST}"
+    } else {
+         rc = bat returnStatus: true, script: "\"${toolbelt}\" force:auth:jwt:grant --clientid ${DEV2_CONNECTED_APP_CONSUMER_KEY} --username ${DEV2_HUB_ORG} --jwtkeyfile \"${dev2_jwt_key_file}\" --setdefaultdevhubusername --instanceurl ${DEV2_SFDC_HOST}"
+
         }
+
         if (rc != 0) { error 'Dev2 org authorization failed' }
+
 
         println "Dev2 Authorization Result: ${rc}"
 
-        // Deploy metadata to Dev2
+
+        // Retrieve metadata from Dev2
+
         def rmsg
+
         if (isUnix()) {
+
             rmsg = sh returnStdout: true, script: "${toolbelt} force:mdapi:retrieve -r manifest/ -u ${DEV2_HUB_ORG} -k manifest/package.xml --wait 10"
+
         } else {
+
             rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:mdapi:retrieve -r manifest/ -u ${DEV2_HUB_ORG} -k manifest/package.xml --wait 10"
+
         }
 
+
         println "Dev2 Retrieve Result: ${rmsg}"
-53
-54
+
+
         // Unzip the retrieved metadata
-55
+
         if (isUnix()) {
-56
+
             sh "unzip -o manifest/unpackaged.zip -d manifest/"
-57
+
         } else {
-58
+
             bat "powershell -command \"Expand-Archive -Path manifest/unpackaged.zip -DestinationPath manifest/ -Force\""
-59
+
         }
     }
+    if (rc != 0) { error 'Dev2 org authorization failed' }
+
+    println "Dev2 Authorization Result: ${rc}"
+
+// Authorize and Deploy to Test2
+
+withCredentials([file(credentialsId: TEST2_JWT_KEY_CRED_ID, variable: 'test2_jwt_key_file')]) {
+
+    stage('Authorize and Deploy to Test2') {
+
+        def rc
+
+        if (isUnix()) {
+
+            rc = sh returnStatus: true, script: "${toolbelt} force:auth:jwt:grant --clientid ${TEST2_CONNECTED_APP_CONSUMER_KEY} --username ${TEST2_HUB_ORG} --jwtkeyfile ${test2_jwt_key_file} --setdefaultdevhubusername --instanceurl ${TEST2_SFDC_HOST}"
+
+        } else {
+
+            rc = bat returnStatus: true, script: "\"${toolbelt}\" force:auth:jwt:grant --clientid ${TEST2_CONNECTED_APP_CONSUMER_KEY} --username ${TEST2_HUB_ORG} --jwtkeyfile \"${test2_jwt_key_file}\" --setdefaultdevhubusername --instanceurl ${TEST2_SFDC_HOST}"
+
+        }
+
+        if (rc != 0) { error 'Test2 org authorization failed' }
+
+    // Deploy metadata to Dev2
+    def rmsg
+    if (isUnix()) {
+        rmsg = sh returnStdout: true, script: "${toolbelt} force:mdapi:retrieve -r manifest/ -u ${DEV2_HUB_ORG} -k manifest/package.xml --wait 10"
+    } else {
+        rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:mdapi:retrieve -r manifest/ -u ${DEV2_HUB_ORG} -k manifest/package.xml --wait 10"
+    }
+
+    println "Dev2 Retrieve Result: ${rmsg}"
+
+
+    // Unzip the retrieved metadata
+
+    if (isUnix()) {
+
+        sh "unzip -o manifest/unpackaged.zip -d manifest/"
+
+    } else {
+
+        bat "powershell -command \"Expand-Archive -Path manifest/unpackaged.zip -DestinationPath manifest/ -Force\""
+
+    }
+}
 }
 
 // Authorize and Deploy to Test2
 withCredentials([file(credentialsId: TEST2_JWT_KEY_CRED_ID, variable: 'test2_jwt_key_file')]) {
-    stage('Authorize and Deploy to Test2') {
-        def rc
-        if (isUnix()) {
-            rc = sh returnStatus: true, script: "${toolbelt} force:auth:jwt:grant --clientid ${TEST2_CONNECTED_APP_CONSUMER_KEY} --username ${TEST2_HUB_ORG} --jwtkeyfile ${test2_jwt_key_file} --setdefaultdevhubusername --instanceurl ${TEST2_SFDC_HOST}"
-        } else {
-            rc = bat returnStatus: true, script: "\"${toolbelt}\" force:auth:jwt:grant --clientid ${TEST2_CONNECTED_APP_CONSUMER_KEY} --username ${TEST2_HUB_ORG} --jwtkeyfile \"${test2_jwt_key_file}\" --setdefaultdevhubusername --instanceurl ${TEST2_SFDC_HOST}"
-        }
-        if (rc != 0) { error 'Test2 org authorization failed' }
-
-         println "Test2 Authorization Result: ${rc}"
-
-        // Deploy metadata to Test2
-        def rmsg
-        if (isUnix()) {
-            rmsg = sh returnStdout: true, script: "${toolbelt} force:mdapi:deploy -d manifest/ -u ${TEST2_HUB_ORG} --wait 10"
-        } else {
-            rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:mdapi:deploy -d manifest/ -u ${TEST2_HUB_ORG} --wait 10"
-        }
-
-      println "Test2 Deployment Result: ${rmsg}"
+stage('Authorize and Deploy to Test2') {
+    def rc
+    if (isUnix()) {
+        rc = sh returnStatus: true, script: "${toolbelt} force:auth:jwt:grant --clientid ${TEST2_CONNECTED_APP_CONSUMER_KEY} --username ${TEST2_HUB_ORG} --jwtkeyfile ${test2_jwt_key_file} --setdefaultdevhubusername --instanceurl ${TEST2_SFDC_HOST}"
+    } else {
+        rc = bat returnStatus: true, script: "\"${toolbelt}\" force:auth:jwt:grant --clientid ${TEST2_CONNECTED_APP_CONSUMER_KEY} --username ${TEST2_HUB_ORG} --jwtkeyfile \"${test2_jwt_key_file}\" --setdefaultdevhubusername --instanceurl ${TEST2_SFDC_HOST}"
     }
+    if (rc != 0) { error 'Test2 org authorization failed' }
+
+     println "Test2 Authorization Result: ${rc}"
+
+    // Deploy metadata to Test2
+    def rmsg
+    if (isUnix()) {
+        rmsg = sh returnStdout: true, script: "${toolbelt} force:mdapi:deploy -d manifest/ -u ${TEST2_HUB_ORG} --wait 10"
+    } else {
+        rmsg = bat returnStdout: true, script: "\"${toolbelt}\" force:mdapi:deploy -d manifest/ -u ${TEST2_HUB_ORG} --wait 10"
+    }
+
+  println "Test2 Deployment Result: ${rmsg}"
+}
 }
 }
