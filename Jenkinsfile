@@ -9,13 +9,13 @@ node {
     // Environment variables for Dev2
     def DEV2_HUB_ORG = env.DEV2_HUB_ORG
     def DEV2_SFDC_HOST = env.DEV2_SFDC_HOST
-    def DEV2_JWT_KEY_CRED_ID = 'bde74365-fe66-45fa-886d-0942a42dbba1'
+    def DEV2_JWT_KEY_CRED_ID = env.DEV2_JWT_CRED_ID
     def DEV2_CONNECTED_APP_CONSUMER_KEY = env.DEV2_CONNECTED_APP_CONSUMER_KEY
 
     // Environment variables for Test2
     def TEST2_HUB_ORG = env.TEST2_HUB_ORG
     def TEST2_SFDC_HOST = env.TEST2_SFDC_HOST
-    def TEST2_JWT_KEY_CRED_ID = 'bde74365-fe66-45fa-886d-0942a42dbba1'
+    def TEST2_JWT_KEY_CRED_ID = env.TEST2_JWT_CRED_ID
     def TEST2_CONNECTED_APP_CONSUMER_KEY = env.TEST2_CONNECTED_APP_CONSUMER_KEY
 
     def toolbelt = tool 'toolbelt'
@@ -30,9 +30,9 @@ node {
         stage('Authorize Dev2 Org') {
             def rc
             if (isUnix()) {
-                rc = sh returnStatus: true, script: "${toolbelt} force:auth:jwt:grant --clientid ${DEV2_CONNECTED_APP_CONSUMER_KEY} --username ${DEV2_HUB_ORG} --jwtkeyfile ${jwt_key_file_dev2} --setdefaultdevhubusername --instanceurl ${DEV2_SFDC_HOST}"
+                rc = sh returnStatus: true, script: "${toolbelt} force:auth:jwt:grant --clientid ${DEV2_CONNECTED_APP_CONSUMER_KEY} --username ${DEV2_HUB_ORG} --jwtkeyfile ${DEV2_JWT_KEY_CRED_ID} --setdefaultdevhubusername --instanceurl ${DEV2_SFDC_HOST}"
             } else {
-                rc = bat returnStatus: true, script: "\"${toolbelt}\" force:auth:jwt:grant --clientid ${DEV2_CONNECTED_APP_CONSUMER_KEY} --username ${DEV2_HUB_ORG} --jwtkeyfile \"${jwt_key_file_dev2}\" --setdefaultdevhubusername --instanceurl ${DEV2_SFDC_HOST}"
+                rc = bat returnStatus: true, script: "\"${toolbelt}\" force:auth:jwt:grant --clientid ${DEV2_CONNECTED_APP_CONSUMER_KEY} --username ${DEV2_HUB_ORG} --jwtkeyfile \"${DEV2_JWT_KEY_CRED_ID}\" --setdefaultdevhubusername --instanceurl ${DEV2_SFDC_HOST}"
             }
             if (rc != 0) { error 'Dev2 org authorization failed' }
         }
