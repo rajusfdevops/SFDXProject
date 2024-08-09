@@ -3,8 +3,6 @@
     <types>
         <members>Test__c</members>
         <name>CustomObject</name>
-         <members>Test__c.Email__c</members>
-        <name>CustomField</name>
     </types>
     <version>44.0</version>
 </Package>
