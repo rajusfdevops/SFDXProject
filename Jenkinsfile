@@ -28,14 +28,14 @@ node {
     // Authorize Dev2 Org
     stage('Authorize Dev2 Org') {
         def rc
-        rc = bat returnStatus: true, script: "\"${toolbelt}\" force:auth:jwt:grant --client-id ${DEV2_CONNECTED_APP_CONSUMER_KEY} --username ${DEV2_HUB_ORG} --jwt-key-file \"${DEV2_JWT_KEY_FILE}\" --set-default-dev-hub --instance-url ${DEV2_SFDC_HOST}"
+        rc = bat returnStatus: true, script: "\"${toolbelt}\" force:auth:jwt:grant --client-id ${DEV2_CONNECTED_APP_CONSUMER_KEY} --username ${DEV2_HUB_ORG} --jwt-key-file \"${DEV2_JWT_KEY_CRED_ID}\" --set-default-dev-hub --instance-url ${DEV2_SFDC_HOST}"
         if (rc != 0) { error 'Dev2 org authorization failed' }
     }
 
     // Authorize Test2 Org
     stage('Authorize Test2 Org') {
         def rc
-        rc = bat returnStatus: true, script: "\"${toolbelt}\" force:auth:jwt:grant --client-id ${TEST2_CONNECTED_APP_CONSUMER_KEY} --username ${TEST2_HUB_ORG} --jwt-key-file \"${TEST2_JWT_KEY_FILE}\" --set-default-dev-hub --instance-url ${TEST2_SFDC_HOST}"
+        rc = bat returnStatus: true, script: "\"${toolbelt}\" force:auth:jwt:grant --client-id ${TEST2_CONNECTED_APP_CONSUMER_KEY} --username ${TEST2_HUB_ORG} --jwt-key-file \"${TEST2_JWT_KEY_CRED_ID}\" --set-default-dev-hub --instance-url ${TEST2_SFDC_HOST}"
         if (rc != 0) { error 'Test2 org authorization failed' }
     }
 
