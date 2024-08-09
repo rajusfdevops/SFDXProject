@@ -9,13 +9,13 @@ node {
     // Environment variables for Dev2
     def DEV2_HUB_ORG = env.DEV2_HUB_ORG
     def DEV2_SFDC_HOST = env.DEV2_SFDC_HOST
-    def DEV2_JWT_KEY_CRED_ID = env.DEV2_JWT_CRED_ID
+    def DEV2_JWT_KEY_CRED_ID = 'bde74365-fe66-45fa-886d-0942a42dbba1'
     def DEV2_CONNECTED_APP_CONSUMER_KEY = env.DEV2_CONNECTED_APP_CONSUMER_KEY
 
     // Environment variables for Test2
     def TEST2_HUB_ORG = env.TEST2_HUB_ORG
     def TEST2_SFDC_HOST = env.TEST2_SFDC_HOST
-    def TEST2_JWT_KEY_CRED_ID = env.TEST2_JWT_CRED_ID
+    def TEST2_JWT_KEY_CRED_ID = 'bde74365-fe66-45fa-886d-0942a42dbba1'
     def TEST2_CONNECTED_APP_CONSUMER_KEY = env.TEST2_CONNECTED_APP_CONSUMER_KEY
 
     def toolbelt = tool 'toolbelt'
