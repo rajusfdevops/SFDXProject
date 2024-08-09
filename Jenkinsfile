@@ -7,16 +7,16 @@ node {
     def SFDC_USERNAME
 
     // Environment variables for Dev2
-    def DEV2_HUB_ORG = env.DEV2_HUB_ORG
-    def DEV2_SFDC_HOST = env.DEV2_SFDC_HOST
-    def DEV2_JWT_KEY_CRED_ID = env.DEV2_JWT_CRED_ID
-    def DEV2_CONNECTED_APP_CONSUMER_KEY = env.DEV2_CONNECTED_APP_CONSUMER_KEY
+    def DEV2_HUB_ORG = 'rajukumarsfdevops-susq@force.com.dev2'
+    def DEV2_SFDC_HOST = 'https://test.salesforce.com'
+    def DEV2_JWT_KEY_CRED_ID = 'bde74365-fe66-45fa-886d-0942a42dbba1'
+    def DEV2_CONNECTED_APP_CONSUMER_KEY = '3MVG9NKbrATitsDbyBEl8XLAzstYT.6djPavrFgGgTkor3RVRGzn0FK.gi6oew_G9vh98eAE0Xfc3oFg0JWJ1'
 
     // Environment variables for Test2
-    def TEST2_HUB_ORG = env.TEST2_HUB_ORG
-    def TEST2_SFDC_HOST = env.TEST2_SFDC_HOST
-    def TEST2_JWT_KEY_CRED_ID = env.TEST2_JWT_CRED_ID
-    def TEST2_CONNECTED_APP_CONSUMER_KEY = env.TEST2_CONNECTED_APP_CONSUMER_KEY
+    def TEST2_HUB_ORG = 'rajukumarsfdevops-susq@force.com.test2'
+    def TEST2_SFDC_HOST = 'https://test.salesforce.com'
+    def TEST2_JWT_KEY_CRED_ID = 'bde74365-fe66-45fa-886d-0942a42dbba1'
+    def TEST2_CONNECTED_APP_CONSUMER_KEY = '3MVG9bFKi1uCqVFW8jjY.Py1iR0s6UUMTFRMTCVaHjGOqWvqBijGNMIPjahphbA5L327TR6YKU69nrqfI6PON'
 
     def toolbelt = tool 'toolbelt'
 
