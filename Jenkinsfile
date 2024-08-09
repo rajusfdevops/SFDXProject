@@ -28,7 +28,7 @@ node {
     // Authorize Dev2 Org
     stage('Authorize Dev2 Org') {
         def rc
-        rc = bat returnStatus: true, script: "\"${toolbelt}\" force:auth:jwt:grant --client-id ${DEV2_APP_CONSUMER_KEY} --username ${DEV2_HUB_ORG} --jwt-key-file \"${DEV2_JWT_KEY_FILE}\" --set-default-dev-hub --instance-url ${DEV2_SFDC_HOST}"
+        rc = bat returnStatus: true, script: "\"${toolbelt}\" force:auth:jwt:grant --client-id ${DEV2_CONNECTED_APP_CONSUMER_KEY} --username ${DEV2_HUB_ORG} --jwt-key-file \"${DEV2_JWT_KEY_FILE}\" --set-default-dev-hub --instance-url ${DEV2_SFDC_HOST}"
         if (rc != 0) { error 'Dev2 org authorization failed' }
     }
 
