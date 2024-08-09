@@ -24,6 +24,16 @@ node {
         checkout scm
     }
 
+    // Debugging: Print the credentials IDs to ensure they are set
+    println "DEV2_HUB_ORG: ${DEV2_HUB_ORG}"
+    println "DEV2_SFDC_HOST: ${DEV2_SFDC_HOST}"
+    println "DEV2_CONNECTED_APP_CONSUMER_KEY: ${DEV2_CONNECTED_APP_CONSUMER_KEY}"
+    println "DEV2_JWT_KEY_CRED_ID: ${DEV2_JWT_KEY_CRED_ID}"
+    println "TEST2_HUB_ORG: ${TEST2_HUB_ORG}"
+    println "TEST2_SFDC_HOST: ${TEST2_SFDC_HOST}"
+    println "TEST2_CONNECTED_APP_CONSUMER_KEY: ${TEST2_CONNECTED_APP_CONSUMER_KEY}"
+    println "TEST2_JWT_KEY_CRED_ID: ${TEST2_JWT_KEY_CRED_ID}"
+
     // Authorize and Deploy to Dev2
     withCredentials([file(credentialsId: DEV2_JWT_KEY_CRED_ID, variable: 'dev2_jwt_key_file')]) {
         stage('Authorize and Deploy to Dev2') {
