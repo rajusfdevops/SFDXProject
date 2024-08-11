@@ -1,5 +1,5 @@
 node {
-    def toolbelt = 'C:\\Program Files\\sfdx\\bin' // Path to Salesforce CLI
+    def toolbelt = tool 'toolbelt' // Path to Salesforce CLI
     def dev2_jwt_key_file = 'bde74365-fe66-45fa-886d-0942a42dbba1'
     def test2_jwt_key_file = 'bde74365-fe66-45fa-886d-0942a42dbba1'
     def DEV2_CONNECTED_APP_CONSUMER_KEY = '3MVG9NKbrATitsDbyBEl8XLAzstYT.6djPavrFgGgTkor3RVRGzn0FK.gi6oew_G9vh98eAE0Xfc3oFg0JWJ1'
@@ -15,7 +15,7 @@ node {
 
     try {
         // Authorize Dev2 Org
-        def rc = bat returnStatus: true, script: "\"${toolbelt}\" force:auth:jwt:grant --clientid ${DEV2_CONNECTED_APP_CONSUMER_KEY} --username ${DEV2_HUB_ORG} --jwtkeyfile \"${dev2_jwt_key_file}\" --setdefaultdevhubusername --instanceurl ${DEV2_SFDC_HOST}"
+        def rc = sh returnStatus: true, script: "${toolbelt} force:auth:jwt:grant --clientid ${DEV2_CONNECTED_APP_CONSUMER_KEY} --username ${DEV2_HUB_ORG} --jwtkeyfile ${dev2_jwt_key_file} --setdefaultdevhubusername --instanceurl ${DEV2_SFDC_HOST}"
         if (rc != 0) { error 'Dev2 org authorization failed' }
 
         // Retrieve Metadata from Dev2
