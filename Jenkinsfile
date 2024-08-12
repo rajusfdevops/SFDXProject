@@ -72,6 +72,15 @@ node {
 
             println rc
 
+            // Check if Test__c.object file exists
+        def objectFileExists
+        if (isUnix()) {
+            objectFileExists = sh returnStatus: true, script: "test -f manifest/objects/Test__c.object"
+        } else {
+            objectFileExists = bat returnStatus: true, script: "if exist manifest\\objects\\Test__c.object (exit 0) else (exit 1)"
+        }
+        if (objectFileExists != 0) { error 'Test__c.object file not found in manifest directory' }
+
             // Deploy metadata to Test2
             def rmsg
             if (isUnix()) {
