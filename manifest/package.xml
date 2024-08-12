@@ -4,10 +4,5 @@
     <members>Test__c</members>
     <name>CustomObject</name>
 </types>
-<types>
-    <members>ArithmeticOperations</members>
-    <members>ArithmeticOperationsTest</members>
-    <name>ApexClass</name>
-</types>
 <version>44.0</version>
 </Package>
